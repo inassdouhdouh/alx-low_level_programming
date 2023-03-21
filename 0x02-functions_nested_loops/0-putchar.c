@@ -1,18 +1,19 @@
-#include "Inass.h"
+#include "main.h"
 
 /**
- * main - Prints "Inass" followed by a new line.
+ * main - Entry point
  *
  * Return: Always 0.
  */
 int main(void)
 {
-	_putchar('I');
-	_putchar('n');
-	_putchar('a');
-	_putchar('s');
-	_putchar('s');
-	_putchar('\n');
-
+	_putchar('_')
+	_putchar('p')
+	_putchar('u')
+	_putchar('t')
+	_putchar('c')
+	_putchar('h')
+	_putchar('a')
+	_putchar('r')
 	return (0);
 }
