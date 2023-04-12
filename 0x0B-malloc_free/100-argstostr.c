@@ -1,50 +1,77 @@
 #include "main.h"
-#include <stdio.h>
+#include <stddef.h>
 #include <stdlib.h>
 
 /**
- * argstostr - function that concatenates all the arguments of your program.
+ * _strcat - Concat string, src appended to dest
  *
- *
- * @ac: ARGC
- * @av: ARGV
- *
- * Return: Pointer
+ * @dest: Destination string
+ * @src: Source string
+ * Return: Concat newString to dest
  */
+char *_strcat(char *dest, char *src)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (dest[i] != '\0')
+		i++;
+	j = 0;
+	while (src[j] != '\0')
+	{
+		dest[i + j] = src[j];
+		j++;
+	}
+	dest[i + j] = '\0';
+	return (dest);
+}
+
+/**
+ * _strlen - Return the number of the length of the string
+ *
+ * @s: This is the string to check
+ *
+ * Return: Return the length of the string
+ */
+int _strlen(char *s)
+{
+	int a;
+
+	for (a = 0; s[a] != '\0'; a++)
+		;
+	return (a);
+}
+
+/**
+ * argstostr - Concats argv to new string
+ *
+ * @ac: Argument count
+ * @av: Arguments
+ *
+ * Return: Returns a pointer to a new string, or NULL if it fails
+ */
+
 char *argstostr(int ac, char **av)
 {
-	int i = 0, j, longitud = 0, l, k;
-	char *string;
+	int index, sumString;
+	char *newString;
 
-	if (ac == 0 || av == '\0')
-	return (NULL);
+	sumString = 1;
 
-	for (i = 0; i < ac; i++)
+	if (ac == 0 || av == NULL)
+		return (0);
+	for (index = 0; index < ac && av[index]; index++)
 	{
-		j = 0;
-		while (av[i][j] != '\0')
-		{
-			j++;
-		}
-		longitud  +=  j + 1;
+		sumString += _strlen(av[index]);
 	}
-	string = malloc(sizeof(char) * (longitud + 1));
-
-	if (string == NULL)
+	newString = malloc((sumString * sizeof(char)) + ac);
+	for (index = 0; index < ac && av[index]; index++)
 	{
+		newString = _strcat(newString, av[index]);
+		newString = _strcat(newString, "\n");
+	}
+	if (newString == NULL)
 		return (NULL);
-	}
-	longitud = 0;
-	for (k = 0; k < ac; k++)
-	{
-		for (l = 0; av[k][l] != '\0'; l++)
-		{
-			*(string + longitud) = av[k][l];
-			longitud++;
-		}
-		*(string + longitud) = '\n';
-		longitud++;
-	}
-
-	return (string);
+	return (newString);
 }
