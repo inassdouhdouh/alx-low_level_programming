@@ -1,68 +1,70 @@
 #include "main.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 /**
- * _isspace - check if a character is whitespace
- * @c: the character to check
- *
- * Return: 1 is c is a whitespace character, otherwise 0
- */
-int _isspace(int c)
+*count - Count words in a string.
+*@str: String address.
+*Return: Number words.
+*/
+
+int count(char *str)
 {
-	if (c == 0x20 || (c >= 0x09 && c <= 0x0d))
-		return (1);
-	return (0);
+	int i = 0, words = 0;
+
+	while (str[i] == ' ')
+		i++;
+
+	while (str[i] != '\0')
+	{
+		if (str[i] != ' ' && (str[i + 1] == '\0' || str[i + 1] == ' '))
+			words++;
+		i++;
+	}
+	return (words);
 }
 
-
 /**
- * strtow - split a string into words
- * @str: a pointer to the string to split
- *
- * Return: NULL if memory allocation fails or if str is NULL or empty (""),
- * otherwise return a pointer to the array of words terminated by a NULL
+ *strtow - each Copy word.
+ *@str: String address.
+ *Return: address.
  */
+
 char **strtow(char *str)
 {
-	char **words, *pos = str;
-	int w = 0, c;
+	char **tab;
+	int words, i = 0, j, c = 0, k;
 
-	if (!(str && *str))
+	words = count(str);
+	if (words == 0)
 		return (NULL);
-	do {
-		while (_isspace(*pos))
-			++pos;
-		if (!*pos)
-			break;
-		while (*(++pos) && !_isspace(*pos))
-			;
-	} while (++w, *pos);
-	if (!w)
+
+	tab = (char **)malloc(sizeof(char *) * (words + 1));
+	if (tab == NULL)
 		return (NULL);
-	words = (char **) malloc(sizeof(char *) * (w + 1));
-	if (!words)
-		return (NULL);
-	w = 0, pos = str;
-	do {
-		while (_isspace(*pos))
-			++pos;
-		if (!*pos)
-			break;
-		for (str = pos++; *pos && !_isspace(*pos); ++pos)
-			;
-		words[w] = (char *) malloc(sizeof(char) * (pos - str + 1));
-		if (!words[w])
+	while (str[i])
+	{
+		if (str[i] != ' ' && (i == 0 || str[i - 1] == ' '))
 		{
-			while (w >  0)
-				free(words[--w]);
-			free(words);
-			return (NULL);
+			for (j = 1; str[i + j] != ' ' && str[i + j]; j++)
+			;
+			tab[c] = (char *)malloc((j + 1) * sizeof(char));
+			if (tab[c] == NULL)
+			{
+				for (k = 0; k < c; k++)
+					free(tab[k]);
+				free(tab);
+				return (NULL);
+			}
+			for (k = 0; k < j; k++)
+				tab[c][k] = str[i + k];
+			tab[c][k] = '\0';
+			c++;
+			i += j;
 		}
-		for (c = 0; str < pos; ++c, ++str)
-			words[w][c] = *str;
-		words[w][c] = '\0';
-	} while (++w, *pos);
-	words[w] = NULL;
-	return (words);
+		else
+			i++;
+	}
+
+	tab[words] = NULL;
+	return (tab);
 }
